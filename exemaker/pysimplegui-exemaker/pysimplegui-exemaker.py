@@ -15,6 +15,8 @@ def main():
                sg.FileBrowse(file_types=(("Python Files", "*.py"),))],
               [sg.Text('Icon File'), sg.Input(key='-iconfile-', size=(45, 1)),
                sg.FileBrowse(file_types=(("Icon Files", "*.ico"),))],
+              [sg.Text('Version File'), sg.Input(key='-versionfile-', size=(45, 1)),
+               sg.FileBrowse(file_types=(("Version Files", "*.txt"),))],	
               [sg.Frame('Output', font='Any 15', layout=[
                         [sg.Output(size=(65, 15), font='Courier 10')]])],
               [sg.Button('Make EXE', bind_return_key=True),
@@ -31,6 +33,7 @@ def main():
 
         source_file = values['-sourcefile-']
         icon_file = values['-iconfile-']
+        version_file = values['-versionfile-']
 
         icon_option = '-i "{}"'.format(icon_file) if icon_file else ''
         source_path, source_filename = os.path.split(source_file)
@@ -39,7 +42,8 @@ def main():
         specpath_option = '--specpath "{}"'.format(source_path)
         folder_to_remove = os.path.join(source_path, source_filename[:-3])
         file_to_remove = os.path.join(source_path, source_filename[:-3]+'.spec')
-        command_line = 'pyinstaller -wF --clean "{}" {} {} {} {}'.format(source_file, icon_option, workpath_option, dispath_option, specpath_option)
+        file_version = '--version-file "{}"'.format(version_file)
+        command_line = 'pyinstaller -wF --clean "{}" {} {} {} {} {}'.format(source_file, icon_option, workpath_option, dispath_option, specpath_option, file_version)
 
         if event == 'Make EXE':
             try:
